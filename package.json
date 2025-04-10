@@ -1,14 +1,18 @@
 {
-  "name": "app",
+  "name": "pont-chaban-delmas-ical",
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
-    "elysia": "latest"
+    "@elysiajs/html": "^1.2.0",
+    "@elysiajs/swagger": "1.2.2",
+    "elysia": "1.2.5",
+    "ical-generator": "^5.0.0"
   },
   "devDependencies": {
+    "@kitajs/ts-html-plugin": "^4.1.1",
     "bun-types": "latest"
   },
   "module": "src/index.js"
