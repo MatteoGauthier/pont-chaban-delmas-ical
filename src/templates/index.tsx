@@ -267,8 +267,8 @@ export function renderHomePage(state: BridgeState): JSX.Element {
                 <fieldset>
                   <legend>Ajouter les fermetures à votre calendrier</legend>
                   <p>
-                    Pour recevoir les mises à jour directement dans votre calendrier, copiez et abonnez-vous à cette
-                    URL :
+                    Pour recevoir les mises à jour directement dans votre calendrier, copiez et abonnez-vous à cette URL
+                    :
                   </p>
 
                   <p>
@@ -359,6 +359,10 @@ export function renderHomePage(state: BridgeState): JSX.Element {
             }
           `}
         </script>
+        <noscript>
+          <img src="https://shynet.squale.dev/ingress/1456bbdf-ac79-4891-94c5-22765806a216/pixel.gif" />
+        </noscript>
+        <script defer src="https://shynet.squale.dev/ingress/1456bbdf-ac79-4891-94c5-22765806a216/script.js"></script>
       </body>
     </html>
   )
