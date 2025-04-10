@@ -266,24 +266,40 @@ export function renderHomePage(state: BridgeState): JSX.Element {
               <div class="calendar-box">
                 <fieldset>
                   <legend>Ajouter les fermetures à votre calendrier</legend>
-                  <p>Pour recevoir les mises à jour directement dans votre calendrier, utilisez ce lien :</p>
                   <p>
-                    <a href={calendarUrl}>
-                      <button>Télécharger le calendrier (.ics)</button>
-                    </a>
+                    Pour recevoir les mises à jour directement dans votre calendrier, copiez et abonnez-vous à cette
+                    URL :
                   </p>
-                  <p>Ou abonnez-vous avec cette URL :</p>
+
                   <p>
-                    <code>{calendarUrl}</code>
+                    <code
+                      onclick={`copyToClipboard('${calendarUrl}', this)`}
+                      style={{ cursor: "pointer" }}
+                      title="Cliquez pour copier l'URL"
+                    >
+                      {calendarUrl}
+                    </code>
                   </p>
                   <div class="calendar-buttons">
                     <a href={webcalUrl}>
                       <button>Ajouter à Apple Calendar</button>
                     </a>
-                    <a href={googleCalendarUrl} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={googleCalendarUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onclick={`copyToClipboard('${calendarUrl}', this.querySelector('button'))`}
+                      title="Cliquez pour copier l'URL et ajouter à Google Calendar"
+                    >
                       <button>Ajouter à Google Calendar</button>
                     </a>
                   </div>
+                  <p>Ou ajouter les événements directement à votre calendrier :</p>
+                  <p>
+                    <a href={calendarUrl}>
+                      <button>Télécharger le calendrier (.ics)</button>
+                    </a>
+                  </p>
                 </fieldset>
               </div>
 
@@ -319,6 +335,30 @@ export function renderHomePage(state: BridgeState): JSX.Element {
             </div>
           </div>
         </div>
+        <script>
+          {`
+            function copyToClipboard(text, element) {
+              if (!navigator.clipboard) {
+                console.error('Clipboard API not available');
+                // Consider adding a fallback or alert for older browsers
+                return;
+              }
+              const originalText = element.innerText;
+              navigator.clipboard.writeText(text).then(() => {
+                element.innerText = 'Copié !';
+                setTimeout(() => {
+                  element.innerText = originalText;
+                }, 1500); // Reset after 1.5 seconds
+              }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                element.innerText = 'Erreur copie';
+                 setTimeout(() => {
+                  element.innerText = originalText;
+                }, 2000);
+              });
+            }
+          `}
+        </script>
       </body>
     </html>
   )
