@@ -32,9 +32,37 @@ export function renderHomePage(state: BridgeState): JSX.Element {
       <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Pont Chaban-Delmas - État actuel</title>
+        <title>Calendrier Pont Chaban-Delmas (Bordeaux) - iCal/Google Agenda</title>
+        <meta
+          name="description"
+          content="Ajoutez facilement les fermetures du pont Chaban-Delmas à Bordeaux à votre Google Agenda ou autre calendrier via notre URL iCal auto-synchronisée. Consultez aussi l'état actuel."
+        />
+        <meta
+          property="og:title"
+          content="Calendrier des Fermetures du Pont Chaban-Delmas (Bordeaux) - iCal/Google Agenda"
+        />
+        <meta
+          property="og:description"
+          content="Abonnez-vous au calendrier iCal des fermetures du pont Chaban-Delmas pour Google Agenda, Apple Calendar, etc. Mises à jour automatiques."
+        />
+        <meta
+          property="og:image"
+          content="https://media-hosting.imagekit.io/628843bfce6b4946/image.avif?Expires=1838912741&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=A4dnCKCdx8sGQQhKhnbYMMwj0xgT-G8DQtuRRscLR0gKIVNh7zP4O1MmV5~wrWzGGGXOWXE7WAMkC69tcv93y9Jb4lV4KX2xMrTzNJYOvQCUN--zhMxtiV~jnaUds5oUNcQaDV3O5SmMkPwGU7G41cgaiCT1AZuYTTdz-kLHPzqtKGLAhr~uZA-OyWRJ~OYiLXdnzSubWkr934BD8VwkXOpUmDXHqaw07gXY3qoMGDL4unoOdGwrsLp6hnOmBg7fIKxuKRfRTEBAU0Z-bhb-WTxg7lWZvTYXSv~wUhgplTEStjhIiA9mJRg8r9PTrPdVIZdT0AvHsCrZFa7UoQjsrg__"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={baseUrl} />
         <link rel="stylesheet" href="https://unpkg.com/7.css" />
         <style>{`
+        h1, h2, h3, h4, h5, h6 {
+          margin-top: 0;
+          margin-bottom: 0;
+          font-size: 1em;
+          font-weight: normal;
+          font-style: normal;
+          text-align: center;
+        }
+
+
           html {
             min-height: 100vh; 
             font-family: 'Tahoma', sans-serif;
@@ -175,7 +203,9 @@ export function renderHomePage(state: BridgeState): JSX.Element {
         <div class="root">
           <div class="window glass active container">
             <div class="title-bar">
-              <div class="title-bar-text">Pont Chaban-Delmas - État Actuel</div>
+              <div class="title-bar-text">
+                <h1>Pont Chaban-Delmas - État & Calendrier (iCal/Google Agenda)</h1>
+              </div>
               <div class="title-bar-controls">
                 <button aria-label="Minimize" disabled></button>
                 <button aria-label="Maximize" disabled></button>
@@ -265,7 +295,9 @@ export function renderHomePage(state: BridgeState): JSX.Element {
 
               <div class="calendar-box">
                 <fieldset>
-                  <legend>Ajouter les fermetures à votre calendrier</legend>
+                  <legend>
+                    <h2>Ajouter les fermetures à votre calendrier</h2>
+                  </legend>
                   <p>
                     Pour recevoir les mises à jour directement dans votre calendrier, copiez et abonnez-vous à cette URL
                     :
@@ -294,6 +326,9 @@ export function renderHomePage(state: BridgeState): JSX.Element {
                       <button>Ajouter à Google Calendar</button>
                     </a>
                   </div>
+                  <span aria-hidden="true" style={{ visibility: "hidden", height: "0px", width: "0px", display: "block" }}>
+                    Google Agenda
+                  </span>
                   <p>Ou ajouter les événements directement à votre calendrier :</p>
                   <p>
                     <a href={calendarUrl}>
