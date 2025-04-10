@@ -35,8 +35,14 @@ export function renderHomePage(state: BridgeState): JSX.Element {
         <title>Pont Chaban-Delmas - État actuel</title>
         <link rel="stylesheet" href="https://unpkg.com/7.css" />
         <style>{`
-          body, html { 
-            padding: 10px; 
+          html {
+            min-height: 100vh; 
+            font-family: 'Tahoma', sans-serif;
+            max-width: 100%;
+            overflow-x: hidden;
+          }
+          body {
+            padding: 10px;
             font-family: 'Tahoma', sans-serif;
             max-width: 100%;
             overflow-x: hidden;
@@ -44,7 +50,9 @@ export function renderHomePage(state: BridgeState): JSX.Element {
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
+            
+            min-height: 100vh; 
+            margin: 0; 
           }
           .window { 
             max-width: 100%; 
@@ -94,12 +102,12 @@ export function renderHomePage(state: BridgeState): JSX.Element {
             color: #333;
           }
           
-          /* Event cards for mobile view */
+          
           .event-card {
             display: none;
           }
           
-          /* Mobile-specific styles */
+          
           @media screen and (max-width: 600px) {
             body {
               padding: 5px;
@@ -157,153 +165,158 @@ export function renderHomePage(state: BridgeState): JSX.Element {
             max-width: 640px;
             margin: 0 auto;
           }
+
+          .root {
+            margin: 20px;
+          }
         `}</style>
       </head>
       <body>
-        <div class="window glass active container">
-          <div class="title-bar">
-            <div class="title-bar-text">Pont Chaban-Delmas - État Actuel</div>
-            <div class="title-bar-controls">
-              <button aria-label="Minimize" disabled></button>
-              <button aria-label="Maximize" disabled></button>
-              <button aria-label="Close" disabled></button>
+        <div class="root">
+          <div class="window glass active container">
+            <div class="title-bar">
+              <div class="title-bar-text">Pont Chaban-Delmas - État Actuel</div>
+              <div class="title-bar-controls">
+                <button aria-label="Minimize" disabled></button>
+                <button aria-label="Maximize" disabled></button>
+                <button aria-label="Close" disabled></button>
+              </div>
             </div>
-          </div>
-          <div class="window-body has-space">
-            <div class="status-box">
-              <fieldset>
-                <legend>État Actuel</legend>
-                {isElevated && currentEvent ? (
-                  <div>
-                    <h2 style={{ color: "red", textAlign: "center" }}>⚠️ Le pont est actuellement fermé ⚠️</h2>
-                    <p>
-                      <strong>Bateau:</strong> {currentEvent.bateau}
-                    </p>
-                    <p>
-                      <strong>Fermeture:</strong> {formatDate(getBridgeEventDates(currentEvent).startDate)}
-                    </p>
-                    <p>
-                      <strong>Réouverture prévue:</strong> {formatDate(getBridgeEventDates(currentEvent).endDate)}
-                    </p>
-                    <p>
-                      <strong>Type:</strong> {currentEvent.type_de_fermeture}
-                    </p>
-                  </div>
-                ) : (
-                  <h2 style={{ color: "green", textAlign: "center" }}>✅ Le pont est ouvert à la circulation</h2>
-                )}
-              </fieldset>
-            </div>
-
-            {upcomingEvents.length > 0 && (
-              <div class="upcoming-box">
+            <div class="window-body has-space">
+              <div class="status-box">
                 <fieldset>
-                  <legend>Prochaines fermetures (5 prochaines)</legend>
-                  <div role="listview">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Date de fermeture</th>
-                          <th>Date de réouverture</th>
-                          <th>Bateau</th>
-                        </tr>
-                      </thead>
-                      <tbody>
+                  <legend>État Actuel</legend>
+                  {isElevated && currentEvent ? (
+                    <div>
+                      <h2 style={{ color: "red", textAlign: "center" }}>⚠️ Le pont est actuellement fermé ⚠️</h2>
+                      <p>
+                        <strong>Bateau:</strong> {currentEvent.bateau}
+                      </p>
+                      <p>
+                        <strong>Fermeture:</strong> {formatDate(getBridgeEventDates(currentEvent).startDate)}
+                      </p>
+                      <p>
+                        <strong>Réouverture prévue:</strong> {formatDate(getBridgeEventDates(currentEvent).endDate)}
+                      </p>
+                      <p>
+                        <strong>Type:</strong> {currentEvent.type_de_fermeture}
+                      </p>
+                    </div>
+                  ) : (
+                    <h2 style={{ color: "green", textAlign: "center" }}>✅ Le pont est ouvert à la circulation</h2>
+                  )}
+                </fieldset>
+              </div>
+
+              {upcomingEvents.length > 0 && (
+                <div class="upcoming-box">
+                  <fieldset>
+                    <legend>Prochaines fermetures (5 prochaines)</legend>
+                    <div role="listview">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Date de fermeture</th>
+                            <th>Date de réouverture</th>
+                            <th>Bateau</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {upcomingEvents.slice(0, 5).map((event) => {
+                            const { startDate, endDate } = getBridgeEventDates(event)
+                            return (
+                              <tr>
+                                <td>{formatDate(startDate)}</td>
+                                <td>{formatDate(endDate)}</td>
+                                <td safe>{event.bateau}</td>
+                              </tr>
+                            )
+                          })}
+                        </tbody>
+                      </table>
+
+                      <div class="mobile-event-cards">
                         {upcomingEvents.slice(0, 5).map((event) => {
                           const { startDate, endDate } = getBridgeEventDates(event)
                           return (
-                            <tr>
-                              <td>{formatDate(startDate)}</td>
-                              <td>{formatDate(endDate)}</td>
-                              <td safe>{event.bateau}</td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
-
-                    {/* Mobile-friendly event cards */}
-                    <div class="mobile-event-cards">
-                      {upcomingEvents.slice(0, 5).map((event) => {
-                        const { startDate, endDate } = getBridgeEventDates(event)
-                        return (
-                          <div class="event-card">
-                            <div class="event-card-row">
-                              <div class="event-card-label">Fermeture:</div>
-                              <div class="event-card-value">{formatDate(startDate)}</div>
-                            </div>
-                            <div class="event-card-row">
-                              <div class="event-card-label">Réouverture:</div>
-                              <div class="event-card-value">{formatDate(endDate)}</div>
-                            </div>
-                            <div class="event-card-row">
-                              <div class="event-card-label">Bateau:</div>
-                              <div class="event-card-value" safe>
-                                {event.bateau}
+                            <div class="event-card">
+                              <div class="event-card-row">
+                                <div class="event-card-label">Fermeture:</div>
+                                <div class="event-card-value">{formatDate(startDate)}</div>
+                              </div>
+                              <div class="event-card-row">
+                                <div class="event-card-label">Réouverture:</div>
+                                <div class="event-card-value">{formatDate(endDate)}</div>
+                              </div>
+                              <div class="event-card-row">
+                                <div class="event-card-label">Bateau:</div>
+                                <div class="event-card-value" safe>
+                                  {event.bateau}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        )
-                      })}
+                          )
+                        })}
+                      </div>
                     </div>
+                  </fieldset>
+                </div>
+              )}
+
+              <div class="calendar-box">
+                <fieldset>
+                  <legend>Ajouter les fermetures à votre calendrier</legend>
+                  <p>Pour recevoir les mises à jour directement dans votre calendrier, utilisez ce lien :</p>
+                  <p>
+                    <a href={calendarUrl}>
+                      <button>Télécharger le calendrier (.ics)</button>
+                    </a>
+                  </p>
+                  <p>Ou abonnez-vous avec cette URL :</p>
+                  <p>
+                    <code>{calendarUrl}</code>
+                  </p>
+                  <div class="calendar-buttons">
+                    <a href={webcalUrl}>
+                      <button>Ajouter à Apple Calendar</button>
+                    </a>
+                    <a href={googleCalendarUrl} target="_blank" rel="noopener noreferrer">
+                      <button>Ajouter à Google Calendar</button>
+                    </a>
                   </div>
                 </fieldset>
               </div>
-            )}
 
-            <div class="calendar-box">
-              <fieldset>
-                <legend>Ajouter les fermetures à votre calendrier</legend>
-                <p>Pour recevoir les mises à jour directement dans votre calendrier, utilisez ce lien :</p>
+              <footer>
                 <p>
-                  <a href={calendarUrl}>
-                    <button>Télécharger le calendrier (.ics)</button>
+                  Données fournies par{" "}
+                  <a href="https://datahub.bordeaux-metropole.fr" target="_blank" rel="noopener noreferrer">
+                    Bordeaux Métropole
+                  </a>
+                  .
+                </p>
+                <p>
+                  Créé par{" "}
+                  <a
+                    href="https://github.com/MatteoGauthier/pont-chaban-delmas-ical"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Mattèo Gauthier
+                  </a>{" "}
+                  avec l'aide des technos{" "}
+                  <a href="https://elysiajs.com" target="_blank" rel="noopener noreferrer">
+                    ElysiaJS
+                  </a>{" "}
+                  et{" "}
+                  <a href="https://github.com/khang-nd/7.css" target="_blank" rel="noopener noreferrer">
+                    7.css
                   </a>
                 </p>
-                <p>Ou abonnez-vous avec cette URL :</p>
-                <p>
-                  <code>{calendarUrl}</code>
-                </p>
-                <div class="calendar-buttons">
-                  <a href={webcalUrl}>
-                    <button>Ajouter à Apple Calendar</button>
-                  </a>
-                  <a href={googleCalendarUrl} target="_blank" rel="noopener noreferrer">
-                    <button>Ajouter à Google Calendar</button>
-                  </a>
-                </div>
-              </fieldset>
+
+                <p>Dernière mise à jour: {new Date().toLocaleString("fr-FR")}</p>
+              </footer>
             </div>
-
-            <footer>
-              <p>
-                Données fournies par{" "}
-                <a href="https://datahub.bordeaux-metropole.fr" target="_blank" rel="noopener noreferrer">
-                  Bordeaux Métropole
-                </a>
-                .
-              </p>
-              <p>
-                Créé par{" "}
-                <a
-                  href="https://github.com/MatteoGauthier/pont-chaban-delmas-ical"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Mattèo Gauthier
-                </a>{" "}
-                avec l'aide des technos{" "}
-                <a href="https://elysiajs.com" target="_blank" rel="noopener noreferrer">
-                  ElysiaJS
-                </a>{" "}
-                et{" "}
-                <a href="https://github.com/khang-nd/7.css" target="_blank" rel="noopener noreferrer">
-                  7.css
-                </a>
-              </p>
-
-              <p>Dernière mise à jour: {new Date().toLocaleString("fr-FR")}</p>
-            </footer>
           </div>
         </div>
       </body>
