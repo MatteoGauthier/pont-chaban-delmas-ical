@@ -52,6 +52,7 @@ export function renderHomePage(state: BridgeState): JSX.Element {
         <meta property="og:type" content="website" />
         <meta property="og:url" content={baseUrl} />
         <link rel="stylesheet" href="https://unpkg.com/7.css" />
+        <link rel="icon" href="https://media-hosting.imagekit.io/895619d39b894f42/ChatGPT%20Image%20Apr%2010,%202025,%2011_41_25%20PM.png?Expires=1838929308&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=a3bELZCN-xoEDxTJeSjhpeKYnN5XPl5AwOwkni~FJYGxmE5BgO36kLjDUmI4t~TC2bYPPgSJL0toCJAt8j~eGNleoNFoty8s0hvuc6KJ3DUCh7OXQjDJqThWIoPTEUj0RSOxURNke9i02FQcHDE9pywJm1hvw-R0k8GY2iGp3a-a7s-oNPzbLmsJzVZjK2yTwRgyVGM~5YHqLztEkGoteAtZ44A9BAMcBLJq9QEYtSvghB9rBq2EuYVBVjJdmNj3S1Tre4I8k5abZNTO3icUNWdv1r31dnBte~M~g3dJz81rHb~ymgQwN4brtY2oz2M6B9ZOxvB~sZ6-ggu0ec8Yyw__" type="image/png" />
         <style>{`
         h1, h2, h3, h4, h5, h6 {
           margin-top: 0;
