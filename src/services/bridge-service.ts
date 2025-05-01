@@ -1,20 +1,44 @@
 import { BordeauxMetropoleResponse, BridgeEvent, BridgeState } from "../types"
 import ical from "ical-generator"
+import { CacheService } from "./cache-service"
 
 const API_URL =
   "https://datahub.bordeaux-metropole.fr/api/explore/v2.1/catalog/datasets/previsions_pont_chaban/records?limit=100"
 
-export async function fetchBridgeData(): Promise<BordeauxMetropoleResponse> {
-  try {
-    const response = await fetch(API_URL)
-    if (!response.ok) {
-      throw new Error(`Failed to fetch bridge data: ${response.status}`)
+// Create cache service for bridge data
+const bridgeDataCache = new CacheService<BordeauxMetropoleResponse>(
+  async () => {
+    try {
+      const response = await fetch(API_URL, {
+        headers: { "User-Agent": "pontchaban.com/1.0" },
+        signal: AbortSignal.timeout(10000), // 10 second timeout
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch bridge data: ${response.status}`)
+      }
+      
+      return await response.json()
+    } catch (error) {
+      console.error("Error fetching bridge data:", error)
+      throw error
     }
-    return await response.json()
-  } catch (error) {
-    console.error("Error fetching bridge data:", error)
-    throw error
+  },
+  {
+    cacheTTL: 12 * 60 * 60 * 1000, // 12 hours
+    refreshInterval: 6 * 60 * 60 * 1000, // 6 hours (refresh halfway through TTL)
   }
+)
+
+// Initialize cache on module load
+bridgeDataCache.startAutoRefresh()
+
+export async function fetchBridgeData(): Promise<BordeauxMetropoleResponse> {
+  return bridgeDataCache.getData()
+}
+
+export function wasDataServedFromCache(): boolean {
+  return bridgeDataCache.wasDataServedFromCache();
 }
 
 export function getBridgeState(): Promise<BridgeState> {
@@ -89,4 +113,8 @@ export function getBridgeEventDates(event: BridgeEvent): { startDate: Date; endD
   }
 
   return { startDate, endDate }
+}
+
+export function getCacheStatus() {
+  return bridgeDataCache.getCacheStatus()
 }
